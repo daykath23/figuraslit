@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html>
+
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>JSFiddle gqpz0c16</title>
+
+  <style>
+    
+  </style>
+
+  
+</head>
+<body>
+  <!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Figuras Literarias | Material Interactivo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Montserrat:wght@700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #005f73;
+      --secondary-color: #0a9396;
+      --background-color: #e9d8a6;
+      --card-background: #fefae0;
+      --text-color: #3d405b;
+      --accent-color: #ee9b00;
+      --correct-color: #4f772d;
+      --incorrect-color: #c9184a;
+      --font-heading: 'Montserrat', sans-serif;
+      --font-body: 'Lato', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background-color: var(--background-color);
+      color: var(--text-color);
+      padding: 20px;
+      transition: background-color 0.5s ease;
+    }
+
+    /* --- Portada --- */
+    #portada {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      z-index: 100;
+      transition: opacity 0.8s ease-in-out;
+    }
+
+    #portada.oculta {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .titulo-portada {
+      font-family: var(--font-heading);
+      font-size: 5rem;
+      font-weight: 900;
+      text-shadow: 4px 4px 8px rgba(0,0,0,0.3);
+    }
+
+    #btn-iniciar {
+      font-family: var(--font-heading);
+      font-size: 1.5rem;
+      background: var(--accent-color);
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      margin-top: 40px;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      transition: transform 0.2s ease, background-color 0.2s ease;
+    }
+
+    #btn-iniciar:hover {
+      background-color: #ffb703;
+      transform: scale(1.05);
+    }
+
+    /* --- Contenido Principal --- */
+    #contenido-principal {
+      max-width: 900px;
+      margin: auto;
+      opacity: 0;
+      transition: opacity 1s ease 0.5s;
+    }
+    
+    #contenido-principal.visible {
+      opacity: 1;
+    }
+
+    h1, h2 {
+      text-align: center;
+      color: var(--primary-color);
+      font-family: var(--font-heading);
+    }
+    
+    h1 {
+      font-size: 2.8rem;
+      margin-bottom: 10px;
+    }
+
+    h2 {
+      font-size: 1.5rem;
+      color: var(--secondary-color);
+      margin-bottom: 30px;
+    }
+
+    .card {
+      background: var(--card-background);
+      border-radius: 15px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+      padding: 25px;
+      margin: 25px 0;
+      border-left: 8px solid var(--secondary-color);
+    }
+    
+    .card h3 {
+      font-family: var(--font-heading);
+      color: var(--primary-color);
+      font-size: 1.4rem;
+      margin-bottom: 15px;
+    }
+
+    button {
+      background: var(--secondary-color);
+      color: white;
+      font-family: var(--font-body);
+      font-weight: bold;
+      border: none;
+      padding: 12px 18px;
+      margin: 10px 5px 0 0;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.2s ease, transform 0.2s ease;
+    }
+
+    button:hover {
+      background-color: var(--primary-color);
+      transform: translateY(-2px);
+    }
+    
+    button.reset-btn {
+        background-color: #8d99ae;
+    }
+    
+    button.reset-btn:hover {
+        background-color: #adb5bd;
+    }
+
+    .feedback {
+      font-weight: bold;
+      margin-top: 15px;
+      padding: 10px;
+      border-radius: 5px;
+    }
+    
+    .feedback.correct {
+        color: var(--correct-color);
+        background-color: #d8f3dc;
+    }
+
+    .feedback.incorrect {
+        color: var(--incorrect-color);
+        background-color: #ffdde5;
+    }
+    
+    .feedback.final {
+        color: var(--primary-color);
+        background-color: #caf0f8;
+    }
+
+    textarea, input[type="text"] {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      margin-top: 8px;
+      border: 2px solid #ddd;
+      font-family: var(--font-body);
+      font-size: 1rem;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    textarea:focus, input[type="text"]:focus {
+      border-color: var(--accent-color);
+      box-shadow: 0 0 8px rgba(238, 155, 0, 0.3);
+      outline: none;
+    }
+
+    .drop-zone {
+      border: 3px dashed var(--secondary-color);
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center;
+      min-height: 65px;
+      margin-top: 10px;
+      transition: background-color 0.3s ease, border-color 0.3s ease;
+    }
+    
+    .drop-zone.over {
+        background-color: #d0f4de;
+        border-color: var(--correct-color);
+    }
+
+    .draggable {
+      display: inline-block;
+      background: var(--accent-color);
+      color: white;
+      padding: 10px 15px;
+      margin: 5px;
+      border-radius: 8px;
+      cursor: grab;
+      user-select: none;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .draggable:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+  </style>
+</head>
+<body>
+
+  <div id="portada">
+    <h1 class="titulo-portada">Figuras Literarias</h1>
+    <button id="btn-iniciar">Iniciar</button>
+  </div>
+  
+  <main id="contenido-principal">
+    <h1>🎨 Uso de Figuras Literarias</h1>
+    <h2>Material Didáctico Interactivo</h2>
+
+    <div class="card">
+      <h3>🟠 Actividad 1: Selecciona la figura literaria</h3>
+      <p><strong>Frase:</strong> "El mar rugía con fuerza durante la tormenta."</p>
+      <button onclick="feedback1('a')">a) Metáfora</button>
+      <button onclick="feedback1('b')">b) Símil</button>
+      <button onclick="feedback1('c')">c) Personificación</button>
+      <button onclick="feedback1('d')">d) Hipérbole</button>
+      <div id="res1" class="feedback"></div>
+      <button onclick="reset1()" class="reset-btn">🔄 Resetear</button>
+    </div>
+
+    <div class="card">
+      <h3>🟡 Actividad 2: Completa la frase</h3>
+      <p>“Tus palabras son ______ que acarician el alma.”</p>
+      <button onclick="feedback2('a')">a) cuchillos filosos</button>
+      <button onclick="feedback2('b')">b) lluvia constante</button>
+      <button onclick="feedback2('c')">c) melodías suaves</button>
+      <button onclick="feedback2('d')">d) pasos silenciosos</button>
+      <div id="res2" class="feedback"></div>
+      <button onclick="reset2()" class="reset-btn">🔄 Resetear</button>
+    </div>
+
+    <div class="card">
+      <h3>🟢 Actividad 3: Verdadero o Falso</h3>
+      <p>1. Una metáfora siempre usa “como”.</p>
+      <input type="text" id="vf1" placeholder="Escribe Verdadero o Falso">
+      <p>2. La personificación atribuye cualidades humanas.</p>
+      <input type="text" id="vf2" placeholder="Escribe Verdadero o Falso">
+      <p>3. “Lloró un río de lágrimas” es hipérbole.</p>
+      <input type="text" id="vf3" placeholder="Escribe Verdadero o Falso">
+      <p>4. En un símil no se compara, solo se describe.</p>
+      <input type="text" id="vf4" placeholder="Escribe Verdadero o Falso">
+      <br><br>
+      <button onclick="verificarVF()">✅ Verificar</button>
+      <button onclick="reset3()" class="reset-btn">🔄 Resetear</button>
+      <div id="res3" class="feedback"></div>
+    </div>
+
+    <div class="card">
+      <h3>🔵 Actividad 4: Arrastrar y Soltar</h3>
+      <p>Arrastra cada figura literaria al ejemplo correspondiente.</p>
+      <div>
+        <div class="draggable" draggable="true" ondragstart="drag(event)" id="metafora">Metáfora</div>
+        <div class="draggable" draggable="true" ondragstart="drag(event)" id="simil">Símil</div>
+        <div class="draggable" draggable="true" ondragstart="drag(event)" id="hiperbole">Hipérbole</div>
+        <div class="draggable" draggable="true" ondragstart="drag(event)" id="personificacion">Personificación</div>
+      </div>
+      <p><strong>“Sus ojos eran dos luceros.”</strong></p>
+      <div class="drop-zone" ondrop="drop(event, 'metafora')" ondragover="allowDrop(event)" ondragenter="dragEnter(event)" ondragleave="dragLeave(event)" id="drop1"></div>
+
+      <p><strong>“Corría tan rápido como un rayo.”</strong></p>
+      <div class="drop-zone" ondrop="drop(event, 'simil')" ondragover="allowDrop(event)" ondragenter="dragEnter(event)" ondragleave="dragLeave(event)" id="drop2"></div>
+
+      <p><strong>“Te dije un millón de veces que no.”</strong></p>
+      <div class="drop-zone" ondrop="drop(event, 'hiperbole')" ondragover="allowDrop(event)" ondragenter="dragEnter(event)" ondragleave="dragLeave(event)" id="drop3"></div>
+
+      <p><strong>“La luna me sonrió.”</strong></p>
+      <div class="drop-zone" ondrop="drop(event, 'personificacion')" ondragover="allowDrop(event)" ondragenter="dragEnter(event)" ondragleave="dragLeave(event)" id="drop4"></div>
+
+      <div id="res4" class="feedback"></div>
+      <button onclick="checkDrops()">✅ Verificar</button>
+      <button onclick="reset4()" class="reset-btn">🔄 Resetear</button>
+    </div>
+
+    <div class="card">
+      <h3>📝 Evaluación Final</h3>
+      <p>Escribe un cuento, poema o diálogo donde uses al menos una <strong>metáfora</strong>, una <strong>hipérbole</strong> y una <strong>personificación</strong>.</p>
+      <textarea rows="6" id="eval" placeholder="Deja volar tu imaginación..."></textarea>
+      <button onclick="finalizar()">📩 Finalizar</button>
+      <div id="felicitacion" class="feedback"></div>
+    </div>
+  </main>
+  
+  <audio id="sound-correct" src="https://www.myinstants.com/media/sounds/correct.mp3" preload="auto"></audio>
+  <audio id="sound-incorrect" src="https://www.myinstants.com/media/sounds/wrong.mp3" preload="auto"></audio>
+  <audio id="sound-start" src="https://www.myinstants.com/media/sounds/button-3.mp3" preload="auto"></audio>
+  <audio id="sound-finish" src="https://www.myinstants.com/media/sounds/level-win.mp3" preload="auto"></audio>
+
+
+<script>
+  // --- Audio ---
+  const correctSound = document.getElementById("sound-correct");
+  const incorrectSound = document.getElementById("sound-incorrect");
+  const startSound = document.getElementById("sound-start");
+  const finishSound = document.getElementById("sound-finish");
+
+  // --- Lógica de la Portada ---
+  const portаda = document.getElementById('portada');
+  const btnIniciar = document.getElementById('btn-iniciar');
+  const contenidoPrincipal = document.getElementById('contenido-principal');
+
+  btnIniciar.addEventListener('click', () => {
+    startSound.play();
+    portаda.classList.add('oculta');
+    contenidoPrincipal.classList.add('visible');
+  });
+
+  // --- Funciones de Actividades ---
+
+  function feedback1(res) {
+    const r = document.getElementById("res1");
+    if (res === 'c') {
+      r.textContent = "✅ ¡Correcto! El mar 'rugía' como si fuera un ser vivo.";
+      r.className = 'feedback correct';
+      correctSound.play();
+    } else {
+      r.textContent = "❌ Incorrecto. 'Rugir' es una cualidad animada atribuida al mar (personificación).";
+      r.className = 'feedback incorrect';
+      incorrectSound.play();
+    }
+  }
+
+  function feedback2(res) {
+    const r = document.getElementById("res2");
+    if (res === 'c') {
+      r.textContent = "✅ ¡Bien! 'Melodías suaves' es una metáfora adecuada para palabras que 'acarician'.";
+      r.className = 'feedback correct';
+      correctSound.play();
+    } else {
+      r.textContent = "❌ Intenta de nuevo. Busca la opción que mejor se compara positivamente con 'palabras'.";
+      r.className = 'feedback incorrect';
+      incorrectSound.play();
+    }
+  }
+
+  function verificarVF() {
+    const respuestas = [
+      document.getElementById("vf1").value.trim().toLowerCase(),
+      document.getElementById("vf2").value.trim().toLowerCase(),
+      document.getElementById("vf3").value.trim().toLowerCase(),
+      document.getElementById("vf4").value.trim().toLowerCase()
+    ];
+    const correctas = ["falso", "verdadero", "verdadero", "falso"];
+    let feedback = "";
+    let todasCorrectas = true;
+    for (let i = 0; i < 4; i++) {
+      if (respuestas[i] === correctas[i]) {
+        feedback += `✅ Enunciado ${i+1}: Correcto.<br>`;
+      } else {
+        feedback += `❌ Enunciado ${i+1}: Incorrecto.<br>`;
+        todasCorrectas = false;
+      }
+    }
+    const r = document.getElementById("res3");
+    r.innerHTML = feedback;
+    r.className = 'feedback';
+    if(todasCorrectas) correctSound.play(); else incorrectSound.play();
+  }
+
+  function reset1() { document.getElementById("res1").textContent = ""; document.getElementById("res1").className = 'feedback'; }
+  function reset2() { document.getElementById("res2").textContent = ""; document.getElementById("res2").className = 'feedback'; }
+  function reset3() {
+    ["vf1", "vf2", "vf3", "vf4"].forEach(id => document.getElementById(id).value = "");
+    document.getElementById("res3").textContent = "";
+    document.getElementById("res3").className = 'feedback';
+  }
+
+  // --- Lógica de Arrastrar y Soltar ---
+  function drag(ev) { 
+    ev.dataTransfer.setData("text", ev.target.id); 
+    ev.target.style.cursor = 'grabbing';
+  }
+  
+  function allowDrop(ev) { ev.preventDefault(); }
+  
+  function dragEnter(ev) {
+    ev.target.classList.add('over');
+  }
+
+  function dragLeave(ev) {
+    ev.target.classList.remove('over');
+  }
+
+  function drop(ev, expected) {
+    ev.preventDefault();
+    ev.target.classList.remove('over');
+    const data = ev.dataTransfer.getData("text");
+    const draggedEl = document.getElementById(data);
+    ev.target.textContent = draggedEl.textContent;
+    ev.target.dataset.value = data;
+    draggedEl.style.cursor = 'grab';
+  }
+  
+  function checkDrops() {
+    const correct = ["metafora", "simil", "hiperbole", "personificacion"];
+    let ok = true;
+    for (let i = 1; i <= 4; i++) {
+      if (document.getElementById("drop" + i).dataset.value !== correct[i - 1]) ok = false;
+    }
+    const res = document.getElementById("res4");
+    if (ok) {
+      res.textContent = "✅ ¡Todo correcto! Excelente trabajo.";
+      res.className = "feedback correct";
+      correctSound.play();
+    } else {
+      res.textContent = "❌ Revisa tus respuestas.";
+      res.className = "feedback incorrect";
+      incorrectSound.play();
+    }
+  }
+
+  function reset4() {
+    for (let i = 1; i <= 4; i++) {
+      const drop = document.getElementById("drop" + i);
+      drop.textContent = "";
+      drop.dataset.value = "";
+    }
+    document.getElementById("res4").textContent = "";
+    document.getElementById("res4").className = 'feedback';
+  }
+
+  // --- Evaluación Final ---
+  function finalizar() {
+    const texto = document.getElementById("eval").value.trim();
+    const msg = document.getElementById("felicitacion");
+    if (texto.length > 20) {
+      msg.textContent = "🎉 ¡Felicidades! Has completado el desafío creativo con éxito.";
+      msg.className = "feedback final";
+      finishSound.play();
+    } else {
+      msg.textContent = "✍️ Agrega un poco más de contenido para completar tu trabajo.";
+      msg.className = "feedback incorrect";
+    }
+  }
+</script>
+
+</body>
+</html>
+
+  <script>
+    // --- Lógica de la Portada ---
+  const portаda = document.getElementById('portada');
+  const btnIniciar = document.getElementById('btn-iniciar');
+  const contenidoPrincipal = document.getElementById('contenido-principal');
+
+  btnIniciar.addEventListener('click', () => {
+    startSound.play();
+    portаda.classList.add('oculta');
+    contenidoPrincipal.classList.add('visible');
+  });
+  </script>
+</body>
+</html>
